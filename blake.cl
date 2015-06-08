@@ -31,10 +31,10 @@
  */
 
 __constant static const sph_u64 BLAKE_IV512[8] = {
-  SPH_C64(0x6A09E667F3BCC908), SPH_C64(0xBB67AE8584CAA73B),
-  SPH_C64(0x3C6EF372FE94F82B), SPH_C64(0xA54FF53A5F1D36F1),
-  SPH_C64(0x510E527FADE682D1), SPH_C64(0x9B05688C2B3E6C1F),
-  SPH_C64(0x1F83D9ABFB41BD6B), SPH_C64(0x5BE0CD19137E2179)
+    SPH_C64(0x6A09E667F3BCC908), SPH_C64(0xBB67AE8584CAA73B),
+    SPH_C64(0x3C6EF372FE94F82B), SPH_C64(0xA54FF53A5F1D36F1),
+    SPH_C64(0x510E527FADE682D1), SPH_C64(0x9B05688C2B3E6C1F),
+    SPH_C64(0x1F83D9ABFB41BD6B), SPH_C64(0x5BE0CD19137E2179)
 };
 
 #define Z00   0
@@ -234,137 +234,137 @@ __constant static const sph_u64 BLAKE_IV512[8] = {
 
 #if SPH_64
 
-#define CBx(r, i)   CBx_(Z ## r ## i)
-#define CBx_(n)     CBx__(n)
-#define CBx__(n)    CB ## n
+    #define CBx(r, i)   CBx_(Z ## r ## i)
+    #define CBx_(n)     CBx__(n)
+    #define CBx__(n)    CB ## n
 
-#define CB0   SPH_C64(0x243F6A8885A308D3)
-#define CB1   SPH_C64(0x13198A2E03707344)
-#define CB2   SPH_C64(0xA4093822299F31D0)
-#define CB3   SPH_C64(0x082EFA98EC4E6C89)
-#define CB4   SPH_C64(0x452821E638D01377)
-#define CB5   SPH_C64(0xBE5466CF34E90C6C)
-#define CB6   SPH_C64(0xC0AC29B7C97C50DD)
-#define CB7   SPH_C64(0x3F84D5B5B5470917)
-#define CB8   SPH_C64(0x9216D5D98979FB1B)
-#define CB9   SPH_C64(0xD1310BA698DFB5AC)
-#define CBA   SPH_C64(0x2FFD72DBD01ADFB7)
-#define CBB   SPH_C64(0xB8E1AFED6A267E96)
-#define CBC   SPH_C64(0xBA7C9045F12C7F99)
-#define CBD   SPH_C64(0x24A19947B3916CF7)
-#define CBE   SPH_C64(0x0801F2E2858EFC16)
-#define CBF   SPH_C64(0x636920D871574E69)
+    #define CB0   SPH_C64(0x243F6A8885A308D3)
+    #define CB1   SPH_C64(0x13198A2E03707344)
+    #define CB2   SPH_C64(0xA4093822299F31D0)
+    #define CB3   SPH_C64(0x082EFA98EC4E6C89)
+    #define CB4   SPH_C64(0x452821E638D01377)
+    #define CB5   SPH_C64(0xBE5466CF34E90C6C)
+    #define CB6   SPH_C64(0xC0AC29B7C97C50DD)
+    #define CB7   SPH_C64(0x3F84D5B5B5470917)
+    #define CB8   SPH_C64(0x9216D5D98979FB1B)
+    #define CB9   SPH_C64(0xD1310BA698DFB5AC)
+    #define CBA   SPH_C64(0x2FFD72DBD01ADFB7)
+    #define CBB   SPH_C64(0xB8E1AFED6A267E96)
+    #define CBC   SPH_C64(0xBA7C9045F12C7F99)
+    #define CBD   SPH_C64(0x24A19947B3916CF7)
+    #define CBE   SPH_C64(0x0801F2E2858EFC16)
+    #define CBF   SPH_C64(0x636920D871574E69)
 
 #endif
 
 #if SPH_64
 
 #define GB(m0, m1, c0, c1, a, b, c, d)   do { \
-    a = SPH_T64(a + b + (m0 ^ c1)); \
-    d = SPH_ROTR64(d ^ a, 32); \
-    c = SPH_T64(c + d); \
-    b = SPH_ROTR64(b ^ c, 25); \
-    a = SPH_T64(a + b + (m1 ^ c0)); \
-    d = SPH_ROTR64(d ^ a, 16); \
-    c = SPH_T64(c + d); \
-    b = SPH_ROTR64(b ^ c, 11); \
-  } while (0)
+        a = SPH_T64(a + b + (m0 ^ c1)); \
+        d = SPH_ROTR64(d ^ a, 32); \
+        c = SPH_T64(c + d); \
+        b = SPH_ROTR64(b ^ c, 25); \
+        a = SPH_T64(a + b + (m1 ^ c0)); \
+        d = SPH_ROTR64(d ^ a, 16); \
+        c = SPH_T64(c + d); \
+        b = SPH_ROTR64(b ^ c, 11); \
+    } while (0)
 
 #define ROUND_B(r)   do { \
-    GB(Mx(r, 0), Mx(r, 1), CBx(r, 0), CBx(r, 1), V0, V4, V8, VC); \
-    GB(Mx(r, 2), Mx(r, 3), CBx(r, 2), CBx(r, 3), V1, V5, V9, VD); \
-    GB(Mx(r, 4), Mx(r, 5), CBx(r, 4), CBx(r, 5), V2, V6, VA, VE); \
-    GB(Mx(r, 6), Mx(r, 7), CBx(r, 6), CBx(r, 7), V3, V7, VB, VF); \
-    GB(Mx(r, 8), Mx(r, 9), CBx(r, 8), CBx(r, 9), V0, V5, VA, VF); \
-    GB(Mx(r, A), Mx(r, B), CBx(r, A), CBx(r, B), V1, V6, VB, VC); \
-    GB(Mx(r, C), Mx(r, D), CBx(r, C), CBx(r, D), V2, V7, V8, VD); \
-    GB(Mx(r, E), Mx(r, F), CBx(r, E), CBx(r, F), V3, V4, V9, VE); \
-  } while (0)
+        GB(Mx(r, 0), Mx(r, 1), CBx(r, 0), CBx(r, 1), V0, V4, V8, VC); \
+        GB(Mx(r, 2), Mx(r, 3), CBx(r, 2), CBx(r, 3), V1, V5, V9, VD); \
+        GB(Mx(r, 4), Mx(r, 5), CBx(r, 4), CBx(r, 5), V2, V6, VA, VE); \
+        GB(Mx(r, 6), Mx(r, 7), CBx(r, 6), CBx(r, 7), V3, V7, VB, VF); \
+        GB(Mx(r, 8), Mx(r, 9), CBx(r, 8), CBx(r, 9), V0, V5, VA, VF); \
+        GB(Mx(r, A), Mx(r, B), CBx(r, A), CBx(r, B), V1, V6, VB, VC); \
+        GB(Mx(r, C), Mx(r, D), CBx(r, C), CBx(r, D), V2, V7, V8, VD); \
+        GB(Mx(r, E), Mx(r, F), CBx(r, E), CBx(r, F), V3, V4, V9, VE); \
+    } while (0)
 
 #endif
 
 #if SPH_64
 
 #define BLAKE_DECL_STATE64 \
-  sph_u64 H0, H1, H2, H3, H4, H5, H6, H7; \
-  sph_u64 S0, S1, S2, S3, T0, T1;
+    sph_u64 H0, H1, H2, H3, H4, H5, H6, H7; \
+    sph_u64 S0, S1, S2, S3, T0, T1;
 
 #define BLAKE_READ_STATE64(state)   do { \
-    H0 = (state)->H[0]; \
-    H1 = (state)->H[1]; \
-    H2 = (state)->H[2]; \
-    H3 = (state)->H[3]; \
-    H4 = (state)->H[4]; \
-    H5 = (state)->H[5]; \
-    H6 = (state)->H[6]; \
-    H7 = (state)->H[7]; \
-    S0 = (state)->S[0]; \
-    S1 = (state)->S[1]; \
-    S2 = (state)->S[2]; \
-    S3 = (state)->S[3]; \
-    T0 = (state)->T0; \
-    T1 = (state)->T1; \
-  } while (0)
+        H0 = (state)->H[0]; \
+        H1 = (state)->H[1]; \
+        H2 = (state)->H[2]; \
+        H3 = (state)->H[3]; \
+        H4 = (state)->H[4]; \
+        H5 = (state)->H[5]; \
+        H6 = (state)->H[6]; \
+        H7 = (state)->H[7]; \
+        S0 = (state)->S[0]; \
+        S1 = (state)->S[1]; \
+        S2 = (state)->S[2]; \
+        S3 = (state)->S[3]; \
+        T0 = (state)->T0; \
+        T1 = (state)->T1; \
+    } while (0)
 
 #define BLAKE_WRITE_STATE64(state)   do { \
-    (state)->H[0] = H0; \
-    (state)->H[1] = H1; \
-    (state)->H[2] = H2; \
-    (state)->H[3] = H3; \
-    (state)->H[4] = H4; \
-    (state)->H[5] = H5; \
-    (state)->H[6] = H6; \
-    (state)->H[7] = H7; \
-    (state)->S[0] = S0; \
-    (state)->S[1] = S1; \
-    (state)->S[2] = S2; \
-    (state)->S[3] = S3; \
-    (state)->T0 = T0; \
-    (state)->T1 = T1; \
-  } while (0)
+        (state)->H[0] = H0; \
+        (state)->H[1] = H1; \
+        (state)->H[2] = H2; \
+        (state)->H[3] = H3; \
+        (state)->H[4] = H4; \
+        (state)->H[5] = H5; \
+        (state)->H[6] = H6; \
+        (state)->H[7] = H7; \
+        (state)->S[0] = S0; \
+        (state)->S[1] = S1; \
+        (state)->S[2] = S2; \
+        (state)->S[3] = S3; \
+        (state)->T0 = T0; \
+        (state)->T1 = T1; \
+    } while (0)
 
 #define COMPRESS64   do { \
-    V0 = H0; \
-    V1 = H1; \
-    V2 = H2; \
-    V3 = H3; \
-    V4 = H4; \
-    V5 = H5; \
-    V6 = H6; \
-    V7 = H7; \
-    V8 = S0 ^ CB0; \
-    V9 = S1 ^ CB1; \
-    VA = S2 ^ CB2; \
-    VB = S3 ^ CB3; \
-    VC = T0 ^ CB4; \
-    VD = T0 ^ CB5; \
-    VE = T1 ^ CB6; \
-    VF = T1 ^ CB7; \
-    ROUND_B(0); \
-    ROUND_B(1); \
-    ROUND_B(2); \
-    ROUND_B(3); \
-    ROUND_B(4); \
-    ROUND_B(5); \
-    ROUND_B(6); \
-    ROUND_B(7); \
-    ROUND_B(8); \
-    ROUND_B(9); \
-    ROUND_B(0); \
-    ROUND_B(1); \
-    ROUND_B(2); \
-    ROUND_B(3); \
-    ROUND_B(4); \
-    ROUND_B(5); \
-    H0 ^= S0 ^ V0 ^ V8; \
-    H1 ^= S1 ^ V1 ^ V9; \
-    H2 ^= S2 ^ V2 ^ VA; \
-    H3 ^= S3 ^ V3 ^ VB; \
-    H4 ^= S0 ^ V4 ^ VC; \
-    H5 ^= S1 ^ V5 ^ VD; \
-    H6 ^= S2 ^ V6 ^ VE; \
-    H7 ^= S3 ^ V7 ^ VF; \
-  } while (0)
+        V0 = H0; \
+        V1 = H1; \
+        V2 = H2; \
+        V3 = H3; \
+        V4 = H4; \
+        V5 = H5; \
+        V6 = H6; \
+        V7 = H7; \
+        V8 = S0 ^ CB0; \
+        V9 = S1 ^ CB1; \
+        VA = S2 ^ CB2; \
+        VB = S3 ^ CB3; \
+        VC = T0 ^ CB4; \
+        VD = T0 ^ CB5; \
+        VE = T1 ^ CB6; \
+        VF = T1 ^ CB7; \
+        ROUND_B(0); \
+        ROUND_B(1); \
+        ROUND_B(2); \
+        ROUND_B(3); \
+        ROUND_B(4); \
+        ROUND_B(5); \
+        ROUND_B(6); \
+        ROUND_B(7); \
+        ROUND_B(8); \
+        ROUND_B(9); \
+        ROUND_B(0); \
+        ROUND_B(1); \
+        ROUND_B(2); \
+        ROUND_B(3); \
+        ROUND_B(4); \
+        ROUND_B(5); \
+        H0 ^= S0 ^ V0 ^ V8; \
+        H1 ^= S1 ^ V1 ^ V9; \
+        H2 ^= S2 ^ V2 ^ VA; \
+        H3 ^= S3 ^ V3 ^ VB; \
+        H4 ^= S0 ^ V4 ^ VC; \
+        H5 ^= S1 ^ V5 ^ VD; \
+        H6 ^= S2 ^ V6 ^ VE; \
+        H7 ^= S3 ^ V7 ^ VF; \
+    } while (0)
 
 #endif
 
